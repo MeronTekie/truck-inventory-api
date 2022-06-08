@@ -29,6 +29,20 @@ namespace TruckInventory.Controllers
       return CreatedAtAction("Post",new {id =inventory.InventoryId},inventory);
 
     }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Inventory>>  GetInventory(int id)
+    {
+    var inventory =  await _db.Inventories.FindAsync(id);
+    if(inventory == null)
+    {
+      return NotFound();
+    }
+    return  inventory;
+
+    }
+  
+
+
 
 
   }
