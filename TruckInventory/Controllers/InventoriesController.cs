@@ -39,9 +39,40 @@ namespace TruckInventory.Controllers
     }
     return  inventory;
 
+
+    }
+    [HttpPut]
+    public async Task<IActionResult> Put(int id, Inventory inventory)
+    {
+      if(id!= inventory.InventoryId)
+      {
+        NotFound();
+      }
+      _db.Entry(inventory).State =EntityState.Modified;
+
+      try
+      {
+        await _db.SaveChangesAsync();
+
+      }
+      catch(DbUpdateConcurrencyException)
+      {
+        if(!InventoryExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+      return NoContent();
+    }
+    private bool InventoryExists( int id)
+    {
+      return _db.Inventories.Any(e => e.InventoryId ==id);
     }
   
-
 
 
 
