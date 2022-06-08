@@ -21,6 +21,15 @@ namespace TruckInventory.Controllers
       var inventory = await _db.Inventories.ToListAsync();
       return inventory;
     }
-    
+    [HttpPost]
+    public async Task<ActionResult<Inventory>> Post(Inventory inventory)
+    {
+      _db.Inventories.Add(inventory);
+      _db.SaveChanges();
+      return CreatedAtAction("Post",new {id =inventory.InventoryId},inventory);
+
+    }
+
+
   }
 }
